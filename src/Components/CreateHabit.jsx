@@ -62,6 +62,9 @@ const Form = styled.form`
         border-radius: 5px;
         border: 1px solid #D4D4D4;
         padding: 10px;
+        outline: none;
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
     }
 `
 

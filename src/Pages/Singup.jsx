@@ -154,6 +154,9 @@ const Form = styled.form`
         padding: 15px;
         border: 1px solid #d4d4d4;
         border-radius: 10px;
+        outline: none;
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
     }
 `;
 
