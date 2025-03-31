@@ -3,7 +3,7 @@ import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import styled from "styled-components";
 
 export default function PasswordValidationForm({pass}) {
-    console.log(pass)
+
     return (
         <Container>
             <Validation>
