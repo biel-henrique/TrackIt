@@ -19,6 +19,7 @@ export default function App() {
                 vertical: "bottom",
                 horizontal: "right",
             }}
+            style={{marginBottom:'70px'}}
         >
             <UserContext.Provider value={[token, setToken, image, setImage]}>
                 <BrowserRouter>
