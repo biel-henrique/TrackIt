@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import logo from "../assets/Images/logo.png";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,9 +29,15 @@ export default function Singup() {
         lower: false,
         number: false,
     });
-    localStorage.setItem('img', '')
+
     const navigate = useNavigate();
     const [token, setToken, image, setImage] = useContext(UserContext);
+
+    useEffect(() => {
+        setImage('')
+        localStorage.removeItem('img')
+      }, []
+    );
 
     const { enqueueSnackbar } = useSnackbar();
 
