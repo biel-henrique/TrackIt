@@ -1,21 +1,20 @@
-import { useContext, useState } from "react"
-import logo from "../assets/Images/logo.png"
-import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
-import { Navigate } from "react-router-dom"
-import UserContext from "../Contexts/UserContext"
-import {SyncLoader} from 'react-spinners';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useContext, useState } from "react";
+import logo from "../assets/Images/logo.png";
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import UserContext from "../Contexts/UserContext";
+import { SyncLoader } from "react-spinners";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import TextField from "@mui/material/TextField";
 
 export default function Home() {
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const navigate = useNavigate()
-    const [token, setToken, image, setImage] = useContext(UserContext)
-    const [isLoading, setIsLoading] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const [token, setToken, image, setImage] = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -26,28 +25,32 @@ export default function Home() {
     };
 
     const sendLogin = (e) => {
-        e.preventDefault()
-        setIsLoading(true)
-        const body ={
+        e.preventDefault();
+        setIsLoading(true);
+        const body = {
             email,
-            password
-        }
+            password,
+        };
 
-        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', body)
-        .then(res => {
-            setIsLoading(false)
-            setToken(res.data.token)
-            localStorage.setItem('token', res.data.token)
-            setImage(res.data.image)
-            localStorage.setItem('img', res.data.image)
-            navigate('/hoje')
-        })
-        .catch(err => {
-            setIsLoading(false)
-            setErrorMessage(err.response.data.message)
-            snack(errorMessage)
-        })
-    }
+        axios
+            .post(
+                "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+                body
+            )
+            .then((res) => {
+                setIsLoading(false);
+                setToken(res.data.token);
+                localStorage.setItem("token", res.data.token);
+                setImage(res.data.image);
+                localStorage.setItem("img", res.data.image);
+                navigate("/hoje");
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                setErrorMessage(err.response.data.message);
+                snack(errorMessage);
+            });
+    };
 
     return (
         <Content>
@@ -56,30 +59,38 @@ export default function Home() {
             </Logo>
             <Form onSubmit={sendLogin}>
                 <Input>
-                    <input
-                        type='email' 
-                        value={email} 
-                        id='email' 
-                        placeholder='Digite seu E-mail' 
+                    <TextField
+                        type="email"
+                        value={email}
+                        className="outlined-required"
+                        label="Digite seu E-mail"
                         onChange={(e) => setEmail(e.target.value)}
-                        disabled={isLoading ? true : false}/>
+                        disabled={isLoading ? true : false}
+                        sx={{ width: "70%", fontSize: "16px", '& .MuiInputBase-root': {height: "50px"}}}
+                    />
                 </Input>
                 <Input>
-                    <input
-                    type='password' 
-                    value={password} 
-                    id='password'
-                    placeholder='Digite sua Senha' 
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading ? true : false}/>
+                    <TextField
+                        type="password"
+                        value={password}
+                        className="outlined-required"
+                        label="Digite sua Senha"
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={isLoading ? true : false}
+                        sx={{ width: "70%", fontSize: "16px", '& .MuiInputBase-root': {height: "50px"}}}
+                    />
                 </Input>
                 <Enter>
-                {!isLoading ? 'Entrar' : <SyncLoader size={8} color="gray"/>}
+                    {!isLoading ? (
+                        "Entrar"
+                    ) : (
+                        <SyncLoader size={8} color="gray" />
+                    )}
                 </Enter>
             </Form>
             <Singup to={`/cadastro`}>Não tem conta? Cadastre-se!</Singup>
         </Content>
-    )
+    );
 }
 
 const Content = styled.div`
@@ -89,14 +100,14 @@ const Content = styled.div`
     justify-content: center;
     height: 100vh;
     width: 100vw;
-`
+`;
 
 const Logo = styled.div`
     img {
         width: 180px;
         height: 178px;
     }
-`
+`;
 
 const Form = styled.form`
     gap: 20px;
@@ -106,7 +117,7 @@ const Form = styled.form`
     width: 100%;
     align-items: center;
     justify-content: center;
-`
+`;
 
 const Enter = styled.button`
     width: 70%;
@@ -114,25 +125,13 @@ const Enter = styled.button`
     padding: 15px;
     background-color: #52b6ff;
     border-radius: 10px;
-`
+`;
 
 const Input = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
 
-    input {
-        width: 70%;
-        height: 45px;
-        padding: 15px;
-        border: 1px solid #D4D4D4;
-        border-radius: 10px;
-        outline: none;
-        font-size: 16px;
-        -webkit-text-size-adjust: 100%;
-    }
-`
-
-const Singup = styled(Link)`
-`
+const Singup = styled(Link)``;

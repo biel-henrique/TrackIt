@@ -5,7 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../Contexts/UserContext";
 import { SyncLoader } from "react-spinners";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider, useSnackbar } from "notistack";
+import TextField from "@mui/material/TextField";
+import PasswordValidationForm from "../Components/PasswordValidationForm";
+import RepeatPassVal from "../Components/RepeatPassVal";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function Singup() {
     const [email, setEmail] = useState("");
@@ -13,6 +18,17 @@ export default function Singup() {
     const [repeatPassword, setRepeatPassword] = useState("");
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [errorInput, setErrorInput] = useState(false);
+    const [valPassword, setValPassword] = useState(false);
+    const [valRptPass, setValRptPass] = useState(false);
+    const [visible, setVisible] = useState(false)
+    const [pass, setPass] = useState({
+        size: false,
+        special: false,
+        upper: false,
+        lower: false,
+        number: false,
+    });
     const navigate = useNavigate();
     const [token, setToken, image, setImage] = useContext(UserContext);
 
@@ -40,13 +56,24 @@ export default function Singup() {
                 body
             )
             .then(() => {
-                navigate("/")
-                setIsLoading(false)
+                navigate("/");
+                setIsLoading(false);
             })
             .catch((err) => {
-                setIsLoading(false)
-                snack(err.response.data.message)
+                setIsLoading(false);
+                snack(err.response.data.message);
             });
+    };
+
+    const passwordValidation = (password) => {
+        setPass((prev) => ({
+            ...prev,
+            size: password.length >= 8,
+            special: /[!@#$%^&*]/.test(password),
+            upper: /[A-Z]/.test(password),
+            lower: /[a-z]/.test(password),
+            number: /\d/.test(password),
+        }));
     };
 
     return (
@@ -56,61 +83,121 @@ export default function Singup() {
             </Logo>
             <Form onSubmit={submitForm}>
                 <Input>
-                    <input
+                    <TextField
                         type="email"
                         value={email}
-                        id="email"
-                        placeholder="Digite seu E-mail"
+                        className="outlined-required"
+                        label="Digite seu E-mail"
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={isLoading ? true : false}
+                        sx={{
+                            width: "100%",
+                            fontSize: "16px",
+                            "& .MuiInputBase-root": { height: "50px" },
+                        }}
                         required
                     />
                 </Input>
-                <Input>
-                    <input
-                        type="password"
+                <InputPass>
+                    <TextField
+                        error={errorInput}
+                        type={visible ? 'text' : 'password'}
                         value={password}
-                        id="password"
-                        placeholder="Digite sua Senha"
-                        onChange={(e) => setPassword(e.target.value)}
+                        className="outlined-required"
+                        label="Digite sua Senha"
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            passwordValidation(e.target.value);
+                        }}
                         disabled={isLoading ? true : false}
+                        sx={{
+                            width: "100%",
+                            fontSize: "16px",
+                            "& .MuiInputBase-root": { height: "50px" },
+                        }}
                         required
+                        onFocus={() => setValPassword(true)}
                     />
-                </Input>
-                {/* <Input>
-                    <input
+                    <Teste>
+                        {!visible ? 
+                            <VisibilityOffIcon onClick={() => setVisible(true)}/>
+                            :
+                            <VisibilityIcon onClick={() => setVisible(false)}/>
+                        }
+                    </Teste>
+                </InputPass>
+                {valPassword && (
+                    <div>
+                        <PasswordValidationForm pass={pass} />
+                    </div>
+                )}
+                <Input>
+                    <TextField
+                        error={errorInput}
                         type="password"
                         value={repeatPassword}
-                        id="repeatPassword"
-                        placeholder="Repita sua Senha"
+                        className="outlined-required"
+                        label="Repita sua Senha"
                         onChange={(e) => setRepeatPassword(e.target.value)}
                         disabled={isLoading ? true : false}
+                        sx={{
+                            width: "100%",
+                            fontSize: "16px",
+                            "& .MuiInputBase-root": { height: "50px" },
+                        }}
+                        onFocus={() => setValRptPass(true)}
                         required
                     />
-                </Input> */}
+                </Input>
+                {valRptPass && (
+                    <RepeatPassVal
+                        password={password}
+                        rptPass={repeatPassword}
+                    />
+                )}
                 <Input>
-                    <input
+                    <TextField
                         type="name"
                         value={name}
-                        id="name"
-                        placeholder="Digite seu Nome"
+                        className="outlined-required"
+                        label="Digite seu Nome"
                         onChange={(e) => setName(e.target.value)}
                         disabled={isLoading ? true : false}
+                        sx={{
+                            width: "100%",
+                            fontSize: "16px",
+                            "& .MuiInputBase-root": { height: "50px" },
+                        }}
                         required
                     />
                 </Input>
                 <Input>
-                    <input
-                        label="photo"
+                    <TextField
                         type="text"
                         value={image}
-                        id="photo"
-                        placeholder="Foto"
+                        className="outlined-required"
+                        label="Foto"
                         onChange={(e) => setImage(e.target.value)}
                         disabled={isLoading ? true : false}
+                        sx={{
+                            width: "100%",
+                            fontSize: "16px",
+                            "& .MuiInputBase-root": { height: "50px" },
+                        }}
+                        required
                     />
                 </Input>
-                <Enter type="submit">
+                <Enter
+                    type="submit"
+                    disabled={
+                        !pass.lower ||
+                        !pass.number ||
+                        !pass.size ||
+                        !pass.special ||
+                        !pass.upper ||
+                        password !== repeatPassword
+                    }
+                >
                     {!isLoading ? (
                         "Cadastrar"
                     ) : (
@@ -132,6 +219,13 @@ const Content = styled.div`
     width: 100vw;
 `;
 
+const Teste = styled.div`
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+`;
+
 const Logo = styled.div`
     img {
         width: 180px;
@@ -144,35 +238,39 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    width: 100%;
-    align-items: center;
+    width: 70%;
+    align-items: start;
     justify-content: center;
 
-    input {
-        width: 70%;
-        height: 45px;
-        padding: 15px;
-        border: 1px solid #d4d4d4;
-        border-radius: 10px;
-        outline: none;
-        font-size: 16px;
-        -webkit-text-size-adjust: 100%;
+    h1 {
+        font-size: 15px;
+        font-weight: 300;
+        color: #666666;
     }
 `;
 
 const Enter = styled.button`
-    width: 70%;
+    width: 100%;
     height: 45px;
     padding: 15px;
     background-color: #52b6ff;
     border-radius: 10px;
+    background-color: ${(props) => (props.disabled ? "#ccc" : "#52b6ff")};
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+    transition: background-color 0.5s;
 `;
 
 const Input = styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 `;
 
 const Singin = styled(Link)``;
+
+const InputPass = styled.div`
+    width: 100%;
+    position: relative;
+
+  .MuiOutlinedInput-root {
+    padding-right: 30px; /* Espaço para o ícone */
+  }
+`;

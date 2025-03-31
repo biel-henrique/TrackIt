@@ -1,20 +1,21 @@
 import { useState } from "react";
 import styled from "styled-components";
 import {SyncLoader} from 'react-spinners';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import TextField from "@mui/material/TextField";
+
 
 export default function CreateHabit({addDays, dayWeek, name, daySelected, setName, submitForm, cancel, isLoading}) {
     
     return (
         <Form onSubmit={submitForm}>
-            <input
+            <TextField
                 type="Text"
                 value={name}
-                id="name"
-                placeholder="Proxima Tarefa..."
+                className="name"
+                label="Proxima Tarefa"
                 onChange={(e) => setName(e.target.value)}
                 disabled={isLoading ? true : false}
-                required
+                sx={{width:'90%'}}
             />
             {name && (
                 <Days>
@@ -55,17 +56,6 @@ const Form = styled.form`
     border: 1px solid #D4D4D4;
     border-radius: 5px;
     background-color: #FFFFFF;
-
-    input {
-        width: 85%;
-        height: 45px;
-        border-radius: 5px;
-        border: 1px solid #D4D4D4;
-        padding: 10px;
-        outline: none;
-        font-size: 16px;
-        -webkit-text-size-adjust: 100%;
-    }
 `
 
 const Days = styled.div`

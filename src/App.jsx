@@ -10,7 +10,7 @@ import { SnackbarProvider } from "notistack";
 
 export default function App() {
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(localStorage.getItem('img'));
 
     return (
         <SnackbarProvider
