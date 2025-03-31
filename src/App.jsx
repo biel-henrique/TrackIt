@@ -6,7 +6,7 @@ import Singup from "./Pages/Singup";
 import Habits from "./Pages/Habits";
 import UserContext from "./Contexts/UserContext";
 import TodayList from "./Pages/TodayList";
-import { SnackbarProvider } from "notistack"; // Importação do SnackbarProvider
+import { SnackbarProvider } from "notistack";
 
 export default function App() {
     const [token, setToken] = useState(localStorage.getItem("token"));

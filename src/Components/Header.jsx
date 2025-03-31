@@ -28,6 +28,7 @@ const Content = styled.div`
     right: 0;
     box-shadow: 0px 4px 4px 0px #00000026;
     border-radius: 0 0 5px 5px;
+    z-index: 9999;
 
     img {
         width: 51px;
