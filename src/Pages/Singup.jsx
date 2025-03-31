@@ -125,7 +125,7 @@ export default function Singup() {
                         required
                         onFocus={() => setValPassword(true)}
                     />
-                    <Teste>
+                    <TypeChange>
                         {!visible ? (
                             <VisibilityOffIcon
                                 onClick={() => setVisible(true)}
@@ -133,12 +133,12 @@ export default function Singup() {
                         ) : (
                             <VisibilityIcon onClick={() => setVisible(false)} />
                         )}
-                    </Teste>
+                    </TypeChange>
                 </InputPass>
                 {valPassword && (
-                    <div>
+                    <Val>
                         <PasswordValidationForm pass={pass} />
-                    </div>
+                    </Val>
                 )}
                 <Input>
                     <TextField
@@ -168,10 +168,12 @@ export default function Singup() {
                     />
                 </Input>
                 {valRptPass && (
-                    <RepeatPassVal
-                        password={password}
-                        rptPass={repeatPassword}
-                    />
+                    <Val>
+                        <RepeatPassVal
+                            password={password}
+                            rptPass={repeatPassword}
+                        />
+                    </Val>
                 )}
                 <Input>
                     <TextField
@@ -237,12 +239,16 @@ const Content = styled.div`
     width: 100vw;
 `;
 
-const Teste = styled.div`
+const TypeChange = styled.div`
     position: absolute;
     top: 50%;
     right: 5px;
     transform: translateY(-50%);
 `;
+
+const Val = styled.div`
+    width: 100%;
+`
 
 const Logo = styled.div`
     img {

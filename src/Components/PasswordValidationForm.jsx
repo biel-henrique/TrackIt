@@ -5,7 +5,7 @@ import styled from "styled-components";
 export default function PasswordValidationForm({pass}) {
     console.log(pass)
     return (
-        <Conteiner>
+        <Container>
             <Validation>
                 <h1>A senha deve ter pelo menos 8 digitos</h1>
                 {pass.size ? (
@@ -56,7 +56,7 @@ export default function PasswordValidationForm({pass}) {
                     />
                 )}
             </Validation>
-        </Conteiner>
+        </Container>
     );
 }
 
@@ -66,7 +66,7 @@ const Validation = styled.div`
     gap: 5px;
 `;
 
-const Conteiner = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
