@@ -19,7 +19,7 @@ export default function Home() {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    const snack = (err) => {
+    const snack = (errorMessage) => {
         enqueueSnackbar(errorMessage, {
             variant: "error",
         });
