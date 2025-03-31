@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import PasswordValidationForm from "../Components/PasswordValidationForm";
 import RepeatPassVal from "../Components/RepeatPassVal";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 export default function Singup() {
     const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ export default function Singup() {
     const [errorInput, setErrorInput] = useState(false);
     const [valPassword, setValPassword] = useState(false);
     const [valRptPass, setValRptPass] = useState(false);
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(false);
     const [pass, setPass] = useState({
         size: false,
         special: false,
@@ -29,6 +29,7 @@ export default function Singup() {
         lower: false,
         number: false,
     });
+    localStorage.setItem('img', '')
     const navigate = useNavigate();
     const [token, setToken, image, setImage] = useContext(UserContext);
 
@@ -101,7 +102,7 @@ export default function Singup() {
                 <InputPass>
                     <TextField
                         error={errorInput}
-                        type={visible ? 'text' : 'password'}
+                        type={visible ? "text" : "password"}
                         value={password}
                         className="outlined-required"
                         label="Digite sua Senha"
@@ -119,11 +120,13 @@ export default function Singup() {
                         onFocus={() => setValPassword(true)}
                     />
                     <Teste>
-                        {!visible ? 
-                            <VisibilityOffIcon onClick={() => setVisible(true)}/>
-                            :
-                            <VisibilityIcon onClick={() => setVisible(false)}/>
-                        }
+                        {!visible ? (
+                            <VisibilityOffIcon
+                                onClick={() => setVisible(true)}
+                            />
+                        ) : (
+                            <VisibilityIcon onClick={() => setVisible(false)} />
+                        )}
                     </Teste>
                 </InputPass>
                 {valPassword && (
@@ -139,7 +142,16 @@ export default function Singup() {
                         className="outlined-required"
                         label="Repita sua Senha"
                         onChange={(e) => setRepeatPassword(e.target.value)}
-                        disabled={isLoading ? true : false}
+                        disabled={
+                            isLoading ||
+                            !pass.lower ||
+                            !pass.number ||
+                            !pass.size ||
+                            !pass.special ||
+                            !pass.upper
+                                ? true
+                                : false
+                        }
                         sx={{
                             width: "100%",
                             fontSize: "16px",
@@ -270,7 +282,7 @@ const InputPass = styled.div`
     width: 100%;
     position: relative;
 
-  .MuiOutlinedInput-root {
-    padding-right: 30px; /* Espaço para o ícone */
-  }
+    .MuiOutlinedInput-root {
+        padding-right: 30px; /* Espaço para o ícone */
+    }
 `;
