@@ -128,6 +128,12 @@ const Input = styled.div`
         padding: 15px;
         border: 1px solid #D4D4D4;
         border-radius: 10px;
+        outline: none;
+
+        &:focus {
+            border-color: #52b6ff;
+            box-shadow: 0 0 5px rgba(82, 182, 255, 0.5);
+        }
     }
 `
 
